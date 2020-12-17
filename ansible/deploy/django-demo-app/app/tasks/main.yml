@@ -1,0 +1,142 @@
+- name: Clone django project repository
+  git:
+    repo: "{{repositary}}"
+    dest: "{{projdir}}"
+    version: master
+  become_user: "{{site_owner}}"
+  
+
+- name: Install python venv
+  apt:
+     name:
+       - python3-venv
+       - libpq-dev 
+       - python-dev
+     state: present
+  
+- name: Create virtualenv and run pip install -r requirement.freeze
+  pip:
+    virtualenv: "{{projdir}}/venv"
+    requirements: "{{projdir}}/requirements.txt"
+    virtualenv_command: "/usr/bin/python3 -m venv"
+   
+    
+- name: Writing variables into /etc/environment
+  lineinfile:
+    dest: /etc/environment
+    state: present
+    line: 
+      - 'SECRET_KEY={{secret_key}}'
+      - 'DEBUG=1'
+
+- name: Writing variables into /etc/environment2
+  lineinfile:
+    dest: /etc/environment
+    state: present
+    line:  'DEBUG=1'
+
+- name: Writing variables into /etc/environment3
+  lineinfile:
+    dest: /etc/environment
+    state: present
+    line:  'DJANGO_DB_BACKEND=django.db.backends.postgresql'
+
+- name: Writing variables into /etc/environment4
+  lineinfile:
+    dest: /etc/environment
+    state: present
+    line:  'SQL_HOST={{sql_host}}'
+
+- name: Writing variables into /etc/environment5
+  lineinfile:
+    dest: /etc/environment
+    state: present
+    line:  'SQL_DATABASE={{db_name}}'
+
+- name: Writing variables into /etc/environment6
+  lineinfile:
+    dest: /etc/environment
+    state: present
+    line:  'SQL_USER={{db_user}}'
+
+- name: Writing variables into /etc/environment7
+  lineinfile:
+    dest: /etc/environment
+    state: present
+    line:  'SQL_PASSWORD={{db_pass}}'
+
+- name: Writing variables into /etc/environment8
+  lineinfile:
+    dest: /etc/environment
+    state: present
+    line:  'SQL_PORT={{sql_port}}'
+
+- name: Writing variables into /etc/environment9
+  lineinfile:
+    dest: /etc/environment
+    state: present
+    line:  'DJANGO_ALLOWED_HOSTS={{sql_host}}'
+
+#пока не получается - вручную
+
+# - name: Make executable manage.py
+#   file:
+#     path: "{{projdir}}/manage.py"
+#     mode: 0777
+
+# - name: Make permissions on project
+#   file:
+#     path: "{{projdir}}"
+#     mode: 0777
+
+
+# - name: Run collectstatic
+#   django_manage:
+#     command: collectstatic
+
+#     app_path: "{{projdir}}"
+#     virtualenv: "{{projdir}}/venv"
+#   become_user: "{{site_owner}}"
+
+
+
+              
+             
+              
+              
+              
+              
+              
+              
+    
+    
+
+
+            # DEBUG="1"
+
+            # SECRET_KEY="DCdsfsdfKJS345K!N223423@22DSDFDSF%."
+            # DJANGO_ALLOWED_HOSTS={{sql_host}}
+            # SQL_ENGINE=django.db.backends.postgresql
+            # SQL_DATABASE={{db_name}}
+            # SQL_USER={{db_user}
+            # SQL_PASSWORD={{db_pass}}
+            # SQL_HOST={{sql_host}}
+            # SQL_PORT="5432"'
+              
+
+
+
+# - name: Run collectstatic
+#   django_manage:
+#     command: collectstatic
+#     app_path: "{{projdir}}"
+#     settings: "config.settings.production"
+#     virtualenv: "{{projdir}}/venv"
+#   become_user: john
+#   environment:
+#     SECRET_KEY: "{{secret_key}}"
+#     DB_NAME: "{{db_name}}"
+#     DB_USER: "{{db_user}}"
+#     DB_PASS: "{{db_pass}}"
+    
+

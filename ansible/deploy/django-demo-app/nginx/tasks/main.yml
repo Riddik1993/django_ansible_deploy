@@ -1,0 +1,31 @@
+---
+- name: Install nginx
+  apt:
+    name: nginx
+    state: present
+
+- name: Deactivate the default nginx from sites-available
+  file:
+    path: /etc/nginx/sites-available/default
+    state: absent
+
+- name: Deactivate the default nginx symlink from sites-enabled
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Copy config of a site
+  template:
+    src: www.museum26.ru
+    dest: /etc/nginx/sites-available/
+
+- name: Activate the symlink to website
+  file: 
+    src: /etc/nginx/sites-available/www.museum26.ru
+    dest: /etc/nginx/sites-enabled/www.museum26.ru
+    state: link
+
+- name: Restart nginx.service
+  systemd:
+    state: restarted
+    name: nginx

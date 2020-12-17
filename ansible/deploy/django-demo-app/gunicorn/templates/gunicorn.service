@@ -1,0 +1,17 @@
+[Unit]
+Description=GUNICORN for Django
+After=network.target
+
+[Service]
+Type=simple
+PIDFile={{projdir}}/gunicorn.pid
+User={{site_owner}}
+Group={{site_owner}}
+EnvironmentFile={{etcdir}}/gunicorn.env
+WorkingDirectory={{projdir}}/
+ExecStart={{projdir}}/venv/bin/gunicorn --config {{etcdir}}/gunicorn.conf.py {{wsgi_folder}}.wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+
+[Install]
+WantedBy=multi-user.target

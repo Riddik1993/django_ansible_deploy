@@ -1,0 +1,8 @@
+[PROD]
+museum ansible_host=##########
+
+
+[PROD:vars]
+ansible_ssh_user=#######
+ansible_ssh_pass=########
+ansible_ssh_private_key=~/home/.ssh/id_rsa
